@@ -9,6 +9,7 @@ class EventSink:public IWbemObjectSink
 	LONG m_lRef;
 	bool bDone;
 public:
+	void (*indicateFunc)();
 	EventSink(void){
 		m_lRef = 0;
 	};

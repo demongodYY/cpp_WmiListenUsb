@@ -93,6 +93,8 @@ void GetWmiInfo::wmiRelease(){
 		CoUninitialize();
 		return ;
 }
+
+
 void GetWmiInfo::ListenUSBdeviceStatu(){
 	IUnsecuredApartment * pUnsecApp = NULL;
 	hres  = CoCreateInstance(
@@ -102,6 +104,7 @@ void GetWmiInfo::ListenUSBdeviceStatu(){
 		IID_IUnsecuredApartment,
 		(void**)&pUnsecApp);
 	EventSink* pSink = new EventSink;
+	pSink->indicateFunc = GetWmiInfo::getUsbinfo;
 	pSink->AddRef();
 	IUnknown * pStubUnk = NULL;
 	pUnsecApp->CreateObjectStub(pSink,&pStubUnk);
@@ -122,8 +125,39 @@ void GetWmiInfo::ListenUSBdeviceStatu(){
 	pSink->Release();
 	pStubSink->Release();
 	return ;
+}
+void  GetWmiInfo::getUsbinfo(){
+	
+	HDEVINFO deviceInfoSet;
+	GUID *guidDev = (GUID*)&GUID_DEVCLASS_USB;
+	TCHAR buffer[5000];
+	DWORD bufferSize = 5000;
+	int memberIndex = 0;
+	DWORD nSize = 0;
+	SP_DEVINFO_DATA deviceInfoData;
+	deviceInfoSet=SetupDiGetClassDevs(guidDev,NULL,NULL,DIGCF_PRESENT|DIGCF_PROFILE);
+	while(true){
+		ZeroMemory(&deviceInfoData,sizeof(SP_DEVINFO_DATA));
+		deviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+		if(SetupDiEnumDeviceInfo(deviceInfoSet,memberIndex,&deviceInfoData)==FALSE){
+			if(GetLastError()==ERROR_NO_MORE_ITEMS){
+				break;
+			}
+		}
+		SetupDiGetDeviceInstanceId(deviceInfoSet,&deviceInfoData,buffer,sizeof(buffer),&nSize);
+		buffer[nSize]='\0';
+		printf("%s\n",buffer);
+		memberIndex++;
+	}
+	if (deviceInfoSet)
+	{
+		SetupDiDestroyDeviceInfoList(deviceInfoSet);
+	}
+	
+	return ;
 
 }
+
 
 GetWmiInfo::~GetWmiInfo(void){
 }

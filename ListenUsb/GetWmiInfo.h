@@ -10,6 +10,7 @@ public:
 	void wmiInit(void);
 	void ListenUSBdeviceStatu(void);
 	void wmiRelease(void);
+	void static getUsbinfo(void);
 private:
 	HRESULT hres;
 	IWbemLocator *pLoc;

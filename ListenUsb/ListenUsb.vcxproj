@@ -57,6 +57,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -81,12 +82,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EventSink.h" />
+    <ClInclude Include="getUSbInfo.h" />
     <ClInclude Include="getWmiInfo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EventSink.cpp" />
+    <ClCompile Include="getUSbInfo.cpp" />
     <ClCompile Include="getWmiInfo.cpp" />
     <ClCompile Include="ListenUsb.cpp" />
     <ClCompile Include="stdafx.cpp">

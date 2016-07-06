@@ -27,9 +27,7 @@ HRESULT EventSink::Indicate(
 			IWbemClassObject __RPC_FAR *__RPC_FAR *apObjectArray
 			){
 	HRESULT hres = S_OK;
-	for(int i =0;i<lObjectCount;i++){
-		printf("Event occurred!\n");
-	}
+		indicateFunc();
 	return WBEM_S_NO_ERROR;
 
 
